@@ -1,7 +1,7 @@
 <template>
   <table border="1" align="center">
     <tr>
-      <td>平文</td>
+      <td>暗号文</td>
       <td>A</td>
       <td>B</td>
       <td>C</td>
@@ -30,7 +30,7 @@
       <td>Z</td>
     </tr>
     <tr>
-      <td>暗号文</td>
+      <td>復号結果</td>
       <td v-for="(k, kk, i) in key" :key="i" :kk="kk" :k="k" :i="i"><input @input="change" v-model="key[kk]" v-bind:name="k" class="w" maxlength="1"/></td>
     </tr>
   </table>
@@ -50,6 +50,7 @@ export default {
     change () {
       let k = []
       for (let i = 0; i < this.keykey.length; i++) {
+        if (this.key[this.keykey[i]] === '') return
         k.push(this.key[this.keykey[i]])
       }
       let r = {id: this.$route.params.id, key: k}

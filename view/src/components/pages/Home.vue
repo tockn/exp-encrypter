@@ -3,7 +3,7 @@
     <h1>換字暗号を解読してみよう!!</h1>
     <mytable />
     <p>正解数：{{ correct }}</p>
-    <p>{{ text }}</p>
+    <pre style="text-align: left">{{ text }}</pre>
   </div>
 </template>
 
