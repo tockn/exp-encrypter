@@ -51,8 +51,8 @@ func ReadByID(id int64) (*MyFile, error) {
 func Encrypt(id int64, key []string) (string, error) {
 	pair := make([]string, 52)
 	for i := 0; i < 52; i += 2 {
-		pair[i+1] = letter[i/2]
-		pair[i] = key[i/2]
+		pair[i] = letter[i/2]
+		pair[i+1] = key[i/2]
 	}
 	r := strings.NewReplacer(pair...)
 	f, err := ReadByID(id)
