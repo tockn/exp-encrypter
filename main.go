@@ -116,7 +116,7 @@ func GetFreqWords(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	counts := analyzer.Analyze(f.Text)
-	result := pickTop10(counts)
+	result := pickTop20(counts)
 	var words []string
 	for _, res := range result {
 		words = append(words, res.Word)
@@ -125,7 +125,10 @@ func GetFreqWords(w http.ResponseWriter, r *http.Request) {
 	JSON(w, http.StatusOK, res)
 }
 
-func pickTop10(data []*analyzer.Count) []*analyzer.Count {
+func pickTop20(data []*analyzer.Count) []*analyzer.Count {
 	sort.Slice(data, func(i, j int) bool { return data[i].Count > data[j].Count })
-	return data[:10]
+	if len(data) < 20 {
+		return data[:len(data)]
+	}
+	return data[:20]
 }

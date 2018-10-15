@@ -22,6 +22,9 @@ func Analyze(text string) []*Count {
 
 	var cs []*Count
 	for _, w := range words {
+		if w == "" {
+			continue
+		}
 		if i, ok := Find(cs, w); ok {
 			cs[i].Count++
 		} else {
@@ -33,6 +36,6 @@ func Analyze(text string) []*Count {
 }
 
 func strip(text string) string {
-	r := strings.NewReplacer(";", "", ",", "", "`", "", "'", "", "(", "", ")", "", ".", "", "\n", " ", "\r", " ")
+	r := strings.NewReplacer(";", "", ",", "", "`", "", "'", "", "(", "", ")", "", ".", "", "\n", " ", "\r", " ", "“", "", "”", "")
 	return r.Replace(text)
 }
