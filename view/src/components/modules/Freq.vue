@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h3>{{ word }}</h3>
-    <p>=></p>
-    <input v-for="(w, i) in word" :key="i" @input="change" v-model="mykey[w]" v-bind:name="w" maxlength="1">
+    <table align="center">
+      <h3 class="inline">{{ word }}</h3>
+      <p class="inline">=></p>
+      <input class="inline" v-for="(w, i) in word" :key="i" @input="change" v-model="mykey[w]" v-bind:name="w" maxlength="1">
+    </table>
   </div>
 </template>
 
@@ -45,3 +47,11 @@ export default {
 }
 
 </script>
+
+<style>
+
+.inline {
+  display: inline;
+}
+
+</style>
