@@ -69,11 +69,15 @@ func CountCorrect(id int64, key []string) (int64, error) {
 	}
 	m := make(map[string]string, 26)
 	for i := 0; i < 26; i++ {
-		m[key[i]] = letter[i]
+		m[letter[i]] = key[i]
+	}
+	mk := make(map[string]string, 26)
+	for i := 0; i < 26; i++ {
+		mk[f.Key[i]] = letter[i]
 	}
 	count := 0
 	for i := 0; i < len(key); i++ {
-		if m[letter[i]] == f.Key[i] {
+		if m[letter[i]] == mk[letter[i]] {
 			count++
 		}
 	}
