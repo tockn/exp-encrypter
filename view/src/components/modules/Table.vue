@@ -31,7 +31,7 @@
     </tr>
     <tr>
       <td>復号結果</td>
-      <td v-for="(k, kk, i) in key" :key="i" :kk="kk" :k="k" :i="i"><input @input="change" v-model="key[kk]" v-bind:name="k" class="w" maxlength="1"/></td>
+      <td v-for="(k, kk, i) in mykey" :key="i" :kk="kk" :k="k" :i="i"><input @input="change" v-model="mykey[kk]" v-bind:name="k" class="w" maxlength="1"/></td>
     </tr>
   </table>
 </template>
@@ -42,23 +42,32 @@ import Store from '../../stores/index'
 export default {
   data () {
     return {
-      key: {'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'F', 'G': 'G', 'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N', 'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T', 'U': 'U', 'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z'},
+      mykey: {'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'F', 'G': 'G', 'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N', 'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T', 'U': 'U', 'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z'},
       keykey: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    }
+  },
+  computed: {
+    key () {
+      return Store.state.key
     }
   },
   methods: {
     change () {
-      let k = []
       for (let i = 0; i < this.keykey.length; i++) {
-        if (this.key[this.keykey[i]] === '') return
-        k.push(this.key[this.keykey[i]])
+        let mk = this.mykey[this.keykey[i]]
+        if (mk === '' || mk === undefined) return
       }
-      let r = {id: this.$route.params.id, key: k}
+      let r = {id: this.$route.params.id, key: this.mykey}
       Store.dispatch('encrypt', r)
     }
   },
   created () {
-    this.key = Store.state.key
+    this.mykey = Store.state.key
+  },
+  watch: {
+    key (v) {
+      this.mykey = v
+    }
   }
 }
 
