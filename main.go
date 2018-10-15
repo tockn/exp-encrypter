@@ -5,10 +5,12 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 
-	"./crypter"
 	"github.com/gorilla/mux"
+	"github.com/tockn/exp-crypt/analyzer"
+	"github.com/tockn/exp-crypt/crypter"
 )
 
 func main() {
@@ -21,6 +23,7 @@ func main() {
 	router.HandleFunc("/api/quiz/{quizID}", GetQuiz).Methods("GET")
 	router.HandleFunc("/api/quiz/{quizID}", Encrypt).Methods("POST")
 	router.HandleFunc("/api/quiz/{quizID}", Preflight).Methods("OPTIONS")
+	router.HandleFunc("/api/quiz/{quizID}/freq", GetFreqWords).Methods("GET")
 
 	log.Printf("start listening on %s", *addr)
 	http.ListenAndServe(*addr, router)
@@ -37,6 +40,10 @@ type ReqKey struct {
 type RespEncrypt struct {
 	Correct int64  `json:"correct"`
 	Text    string `json:"text"`
+}
+
+type RespFreqWords struct {
+	Words []string `json:"words"`
 }
 
 func JSON(w http.ResponseWriter, code int, data interface{}) error {
@@ -95,4 +102,30 @@ func Encrypt(w http.ResponseWriter, r *http.Request) {
 		Text:    text,
 	}
 	JSON(w, http.StatusOK, res)
+}
+
+func GetFreqWords(w http.ResponseWriter, r *http.Request) {
+	quizID, err := param(r, "quizID")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	f, err := crypter.ReadByID(quizID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	counts := analyzer.Analyze(f.Text)
+	result := pickTop10(counts)
+	var words []string
+	for _, res := range result {
+		words = append(words, res.Word)
+	}
+	res := RespFreqWords{Words: words}
+	JSON(w, http.StatusOK, res)
+}
+
+func pickTop10(data []*analyzer.Count) []*analyzer.Count {
+	sort.Slice(data, func(i, j int) bool { return data[i].Count > data[j].Count })
+	return data[:10]
 }
