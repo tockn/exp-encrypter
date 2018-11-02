@@ -36,6 +36,6 @@ func Analyze(text string) []*Count {
 }
 
 func strip(text string) string {
-	r := strings.NewReplacer(";", "", ",", "", "`", "", "'", "", "(", "", ")", "", ".", "", "\n", " ", "\r", " ", "“", "", "”", "")
+	r := strings.NewReplacer(";", "", ",", "", "`", "", "'", "", "(", "", ")", "", ".", "", "\n", " ", "\r", " ", "“", "", "”", "", "-", "")
 	return r.Replace(text)
 }
