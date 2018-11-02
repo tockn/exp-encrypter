@@ -72,12 +72,11 @@ input {
 }
 
 .header {
-  height: 30vh;
 }
 
 .content {
-  height: 70vh;
   display: flex;
+  height: 60vh;
 }
 
 .freq {
