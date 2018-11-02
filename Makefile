@@ -15,6 +15,7 @@ install:
 	echo "export PATH=$PATH:$GOPATH/bin" >> ~/.bashrc
 	source ~/.bashrc
 	go version
+	rm -rf go1.11.1.linux-amd64.tar.gz
 	sudo yum install -y nodejs
 	sudo yum install -y npm
 	npm install -g vue-cli
