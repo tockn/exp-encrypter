@@ -28,6 +28,9 @@ export default {
   },
   methods: {
     change () {
+      Object.keys(this.mykey).forEach(k => {
+        this.mykey[k] = this.mykey[k].toUpperCase()
+      })
       for (let i = 0; i < this.keykey.length; i++) {
         let mk = this.mykey[this.keykey[i]]
         if (mk === '' || mk === undefined) return
