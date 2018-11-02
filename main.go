@@ -9,8 +9,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/tockn/exp-crypt/analyzer"
-	"github.com/tockn/exp-crypt/crypter"
+	"github.com/tockn/exp-encrypter/analyzer"
+	"github.com/tockn/exp-encrypter/crypter"
 )
 
 func main() {
@@ -24,6 +24,17 @@ func main() {
 	router.HandleFunc("/api/quiz/{quizID}", Encrypt).Methods("POST")
 	router.HandleFunc("/api/quiz/{quizID}", Preflight).Methods("OPTIONS")
 	router.HandleFunc("/api/quiz/{quizID}/freq", GetFreqWords).Methods("GET")
+
+	router.PathPrefix("/static/img/").Handler(
+		http.StripPrefix("/static/img/", http.FileServer(http.Dir("static/img"))))
+	router.PathPrefix("/static/css/").Handler(
+		http.StripPrefix("/static/css/", http.FileServer(http.Dir("static/css"))))
+	router.PathPrefix("/static/js/").Handler(
+		http.StripPrefix("/static/js/", http.FileServer(http.Dir("static/js"))))
+
+	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/index.html")
+	})
 
 	log.Printf("start listening on %s", *addr)
 	http.ListenAndServe(*addr, router)
