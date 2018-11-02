@@ -18,5 +18,5 @@ install:
 	sudo yum install -y nodejs &&
 	sudo yum install -y npm &&
   npm install -g vue-cli &&
-	go get -u github.com/tockn/exp-crypt
+	go get -u github.com/tockn/exp-encrypter
 
